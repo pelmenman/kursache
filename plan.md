@@ -88,4 +88,5 @@
     - https://proglib.io/p/must-have-algoritmy-dlya-raboty-so-strokami-na-c-2020-03-30 [8]
     - https://neerc.ifmo.ru/wiki Алгоритм Бойера-Мура [9]
     - https://habr.com/ru/post/111449/
+    - https://habr.com/ru/post/662678/ Алгоритм Рабина-Карпа
     
