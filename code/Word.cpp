@@ -1,27 +1,30 @@
-#include <iostream>
 #include <string>
-using namespace std;
 
 class Word {
 public:
-    Word(string word) {
-        hashIt(word);
+    Word(std::string word) {
+        this->word = word;
+        hashIt();
     }
 
-    string getWord() const {
-        return word;
+    std::string getWord() const {
+        return this->word;
     }
 
-    long long getHash() const {
-        return hash;
-    }
+     long long getHash() const {
+        return this->hash;
+     }
 private:
+    static const long long MODULE = 10e7 + 9;
+    static const int ALPHABET_SIZE = 33;
     long long hash = 0;
-    string word;
+    std::string word;
 
-    void hashIt(string word) {
+    void hashIt() {
+        long long sub = 1;
         for(int i = 0; i < word.size(); i++) {
-            hash = (hash +
+            hash = (hash + (word[i] - 'a' + 1)*sub % MODULE) % MODULE;
+            sub *= ALPHABET_SIZE;
         }
     }
 };
