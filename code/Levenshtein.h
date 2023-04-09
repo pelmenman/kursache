@@ -6,5 +6,5 @@ public:
     static getMinDistance(Word word, int sizeWord, Word otherWord, int sizeOtherWord);
 private:
     Levenshtein();
-    static Levenshtein* realization;
+    static inline Levenshtein* realization = nullptr;
 };

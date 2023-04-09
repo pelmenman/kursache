@@ -1,12 +1,11 @@
 #include "Levenshtein.h"
 
-Levenshtein Levenshtein::getInstance() {
-
-    if(realization == 0) {
-        realization = new Levenshtein();
-        return *realization;
+Levenshtein* Levenshtein::getInstance() {
+    if(realization != nullptr) {
+        return realization;
     }
-    return *realization;
+    realization = new Levenshtein();
+    return realization;
 }
 
 int Levenshtein:: getMinDistance(Word word, int sizeWord, Word otherWord, int sizeOtherWord) {
