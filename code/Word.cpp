@@ -1,10 +1,12 @@
 #include <string>
 #include "Word.h"
 
-    Word::Word(std::string& word) {
+    Word::Word(std::string word) {
         this->word = word;
         hashIt();
     }
+
+    Word::Word() {}
 
     std::string Word::getWord() const {
         return this->word;

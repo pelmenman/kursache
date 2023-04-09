@@ -1,23 +1,15 @@
 #include "Levenshtein.h"
 
-Levenshtein* Levenshtein::getInstance() {
-    if(realization != nullptr) {
-        return realization;
-    }
-    realization = new Levenshtein();
-    return realization;
-}
+int Levenshtein::getMinDistance(Word word, int sizeWord, Word otherWord, int sizeOtherWord) {
+    if (std::min(sizeWord, sizeOtherWord) == 0) return std::max(sizeWord, sizeOtherWord);
 
-int Levenshtein:: getMinDistance(Word word, int sizeWord, Word otherWord, int sizeOtherWord) {
-    if (min(sizeWord, sizeOtherWord) == 0) return max(sizeWord, sizeOtherWord);
+    int distance = word.getWord()[sizeWord-1] == otherWord.getWord()[sizeOtherWord - 1] ? 0 : 1;
 
-    int distance;
+    int replacement = getMinDistance(word, sizeWord - 1, otherWord, sizeOtherWord - 1) + distance;
+    int insertion = getMinDistance(word, sizeWord, otherWord, sizeOtherWord - 1) + 1;
+    int deletion = getMinDistance(word, sizeWord - 1, otherWord, sizeOtherWord) + 1;
 
-    (word[sizeWord-1] == otherWord[sizeOtherWord - 1])? distance = 0 : distance = 1;
-
-    return min(getMinDistance(word, sizeWord - 1, otherWord, sizeOtherWord - 1) + distance, 
-           min(getMinDistance(word, sizeWord, otherWord, sizeOtherWord - 1) + 1, 
-           getMinDistance(word, sizeWord - 1, otherWord, sizeOtherWord) + 1));
+    return std::min(replacement, std::min(insertion, deletion));
 
 }
 
