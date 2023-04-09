@@ -1,10 +1,10 @@
+#pragma once
+#include "Word.h"
 #include <vector>
-#include <string>
-using namespace std;
 
 class Text {
 public:
-    Text(string text);
+    Text(std::string text);
 private:
-    vector<int> hash;
+    std::vector<Word> word;
 };

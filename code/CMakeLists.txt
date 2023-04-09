@@ -3,4 +3,4 @@ project(cppProject)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(cppProject main.cpp test/word/test_word.cpp Word.cpp test/word/test_word.h Word.h Text.h Coincidence.h)
+add_executable(cppProject main.cpp test/word/test_word.cpp Word.cpp test/word/test_word.h Word.h Text.h Coincidence.h Levenshtein.h test/levenshtein/test_livenshtein.h test/levenshtein/test_livenshtein.cpp)
