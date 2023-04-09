@@ -1,8 +1,7 @@
 //
 // Created by chuch on 09.04.2023.
 //
-#include <iostream>
-#include "../Word.cpp"
+#include "test_word.h"
 
 void testWord(std::string word, long long hash, int num_test) {
     auto w = Word(word);
@@ -11,7 +10,7 @@ void testWord(std::string word, long long hash, int num_test) {
     else
         std::cout << "Test " << num_test << " failed: " << '\n';
 
-    std::cout << '{' << "hash :" << hash << ", word :" << word << " }\n";
+    std::cout << "{ " << "hash :" << hash << ", word :" << word << " }\n";
 }
 
 void testingWordClass() {
