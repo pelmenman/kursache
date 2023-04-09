@@ -2,8 +2,8 @@
 
 class Levenshtein {
 public:
-    static Levenshtein getInstance();
+    static Levenshtein* getInstance();
 private:
     Levenshtein();
-    static Levenshtein* realization;
+    static inline Levenshtein* realization = nullptr;
 };

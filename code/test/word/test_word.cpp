@@ -1,6 +1,4 @@
-//
-// Created by chuch on 09.04.2023.
-//
+
 #include "test_word.h"
 
 void testWord(std::string word, long long hash, int num_test) {
