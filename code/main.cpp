@@ -1,14 +1,15 @@
 
 #include "test/word/test_word.h"
 #include "test/levenshtein/test_levenshtein.h"
+#include "test/text/test_text.h"
 
 void test() {
     testingWordClass();
     testingGetDistance();
+    testingTextClass();
 }
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
     test();
     return 0;
 }

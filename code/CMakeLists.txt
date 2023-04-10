@@ -13,4 +13,6 @@ add_executable(cppProject
         Levenshtein.cpp
         test/levenshtein/test_levenshtein.h
         test/levenshtein/test_levenshtein.cpp
-        Text.h Text.cpp)
+        Text.h Text.cpp "test/text/test_text.h"
+        test/text/test_text.cpp
+        test/text/test_text.h)

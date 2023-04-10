@@ -10,7 +10,6 @@ int Levenshtein::getMinDistance(Word word, int sizeWord, Word otherWord, int siz
     int deletion = getMinDistance(word, sizeWord - 1, otherWord, sizeOtherWord) + 1;
 
     return std::min(replacement, std::min(insertion, deletion));
-
 }
 
 Levenshtein::Levenshtein() {}
