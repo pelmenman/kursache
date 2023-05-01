@@ -3,8 +3,8 @@
 #include <string>
 #include <iostream>
 
-#include "../../Word.h"
+#include "../../word/Word.h"
 
-void testWord(std::string word, long long hash, int num_test);
+void testWord(std::string& word, long long hash, int num_test);
 
 void testingWordClass();

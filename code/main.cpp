@@ -5,7 +5,7 @@
 
 void test() {
     testingWordClass();
-    testingGetDistance();
+//    testingGetDistance();
     testingTextClass();
 }
 

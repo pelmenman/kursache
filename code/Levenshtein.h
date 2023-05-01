@@ -1,5 +1,5 @@
 #pragma once
-#include "Word.h"
+#include "word/Word.h"
 
 class Levenshtein {
 public:

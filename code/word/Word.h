@@ -1,18 +1,19 @@
 #pragma once
 #include <string>
+#include "../ENV.h"
 
 class Word {
 public:
-    Word(std::string word);
+    Word(char* word, int len);
 
     std::string getWord() const;
     long long getHash() const;
 private:
     Word();
-    static const long long MODULE = 10e7 + 9;
-    static const int ALPHABET_SIZE = 33;
     long long hash = 0;
-    std::string word;
+    char* word;
+    int len;
 
     void hashIt();
+    int getCode(char c) const;
 };

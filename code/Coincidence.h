@@ -1,6 +1,6 @@
 #pragma once
-#include "Word.h"
-#include "Text.h"
+#include "word/Word.h"
+#include "text/Text.h"
 #include <queue>
 
 class Coincidence {

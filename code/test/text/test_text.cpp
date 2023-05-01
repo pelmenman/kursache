@@ -1,24 +1,24 @@
-#include "../../Text.h"
+#include "../../text/Text.h"
 #include "test_text.h"
 
-void testText(std::string str, int expected_num_of_words, int num_test) {
+void testText(std::string str, int expectedNumOfWords, int num_test) {
 	Text text(str);
 
-	if (text.getSize() == expected_num_of_words) {
+	if (text.getSize() == expectedNumOfWords) {
 		std::cout << "Test " << num_test << " passed \n";
 	}
 	else {
 		std::cout << "Test " << num_test << " failed \n";
 	}
 
-	std::cout << "{ Text: " << str << ", Vector: " ;
+	std::cout << "{ text: " << str << ", Vector: " ;
 
 	for (int i = 0; i < text.getSize(); i++) {
-		std::cout << text[i].getWord() << " ";
+		std::cout << text[i]->getWord() << " ";
 	}
 
-	std::cout << std::endl;
-	std:: cout << "  Text size: " << expected_num_of_words << ",\t Vector size: " << text.getSize() << " }" << std::endl;
+	std::cout << '\n';
+	std:: cout << "  text size: " << expectedNumOfWords << ",\t Vector size: " << text.getSize() << " }" << std::endl;
 }
 
 void testingTextClass() {
