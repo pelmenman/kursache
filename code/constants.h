@@ -7,5 +7,5 @@
 
 #endif //CPPPROJECT_ENV_H
 
-static const long long MODULE = 10e7 + 9;
+static const long long MOD = 10e7 + 9;
 static const int ALPHABET_SIZE = 33;

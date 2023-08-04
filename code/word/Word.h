@@ -1,19 +1,26 @@
-#pragma once
 #include <string>
-#include "../ENV.h"
+#include "../constants.h"
 
 class Word {
 public:
-    Word(char* word, int len);
+    long long hash() const;
+    size_t size() const;
 
-    std::string getWord() const;
-    long long getHash() const;
+    Word(char* word, size_t size);
+
+    Word(const std::string& str);
+
+    char operator[](size_t index) const; 
+    
 private:
-    Word();
-    long long hash = 0;
+    Word() = delete;
+    long long hash;
     char* word;
-    int len;
+    size_t size;
 
-    void hashIt();
-    int getCode(char c) const;
+    void hashing() const;
+
+    friend std::ostream& operator<<(std::ostream &os, const Word& word);
 };
+
+std::ostream& operator<<(std::ostream &os, const Word& word);

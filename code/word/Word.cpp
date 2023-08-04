@@ -1,38 +1,29 @@
 #include <string>
-#include "Word.h"
+#include "word.h"
+#include "../constants.h
 
-    Word::Word(char* word, int len) {
-        this->word = word;
-        this->len = len;
-        hashIt();
-    }
+    Word::Word(char* word, size_t size): word(word), size(size) { hashing(); } 
+    
+    Word::Word(const std::string& str): word(str), size(str.size()) { hashing(); }
 
-    Word::Word() {}
+    size_t Word::size() const { return size; }
 
-    std::string Word::getWord() const {
-        char s[len];
-        char* sWord = word;
-        for(int i = 0; i < len; i++) {
-            s[i] = *sWord;
-            sWord++;
-        }
-        return s;
-    }
+    long long Word::hash() const { return hash; }
 
-    long long Word::getHash() const {
-        return hash;
-    }
-
-    void Word::hashIt() {
-        long long multiplication = 1;
-        char* word_it = word;
-        for (int i = 0; i < len; i++) {
-            hash = (hash + getCode(*word_it) * multiplication % MODULE) % MODULE;
-            multiplication = (multiplication * ALPHABET_SIZE) % MODULE;
-            word_it++;
+    void Word::hashing() {
+        long long exp = 1;
+        for (char* ptr = word; ptr != word + size; ptr++) {
+            hash = ((hash + code(*ptr) * exp) % MOD) % MOD;
+            exp = (exp * ALPHABET_SIZE) % MOD;
         }
     }
 
-    int Word::getCode(char c) const {
-            return islower(c) ? c - 'a' + 1 : c - 'A' + 1;
+    char Word::operator[](size_t index) const { return *(word + index); }
+
+    int code(char c) const { return islower(c) ? c - 'a' + 1 : c - 'A' + 1; }
+
+    std::ostream& operator<<(std::ostream &os, const Word& word) {
+        for(char* ptr = word; ptr != word + size; ptr++) {
+            os << *ptr;
+        }
     }

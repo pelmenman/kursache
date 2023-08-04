@@ -1,17 +1,20 @@
 #include "test_levenshtein.h"
 
-void testGetDistance(Word word1, Word word2, int dist, int num_test) {
-    int current_dist = Levenshtein::getMinDistance(word1,word1.getWord().size(), word2, word2.getWord().size());
+void testGetDistance(const Word& word1, const Word& word2, int expected_dist, int num_test) {
+    int current_dist = levenshtein(word1, word2);
 
-    if (current_dist == dist) {
+    if (current_dist == expected_dist) {
         std::cout << "Test " << num_test << " passed: " << '\n';
-    } else {
+    } 
+    else {
         std::cout << "Test " << num_test << "failed: " << '\n';
     }
-    std::cout << "{ word1 = " << word1.getWord() << ", word2 = " << word2.getWord() << ", dist = " << dist << " }" << '\n';
+        
+    std::cout << "{ word1 = " << word1 << ", word2 = " << word2 << ", dist = " << expected_dist << " }" << '\n';
 }
 
 void testingGetDistance() {
+
     testGetDistance(Word("aaa"), Word("aaa"), 0, 1);
     testGetDistance(Word("kitten"), Word("sitting"), 3, 2);
     testGetDistance(Word("biba"), Word("boba"), 1, 3);

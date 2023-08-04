@@ -1,9 +1,7 @@
 #pragma once
 
-#include "../../Levenshtein.h"
+#include "../../algorithms/algo.h"
 #include <iostream>
-#include "../../word/Word.h"
-
-void testGetDistance(Word word1, Word word2, int dist, int num_test);
+#include "../../word/word.h"
 
 void testingGetDistance();
