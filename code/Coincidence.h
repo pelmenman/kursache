@@ -18,7 +18,15 @@ public:
 		//Draft
 		// while(coincidences.size() != 10) {
 		//	for(Word w : text) {
-		//		(getPercentage(levenshtein(word, w)) > 60)? coincidence.insert(w) : continue;
+		//		(getPercentage(levenshtein(word, w)) > 60)? coincidence.push(w) : continue;
+		//
+		// 	OR levenshetin is already gives percentages so
+		//		(levenshtein(word, w) > 60)? coincidence.push(w) : continue;
+		//
+		// if we have hash instead of livenshtein then
+		//		(word.hash() == w.hash())? check(word, w) : continue;
+		//
+		//
 		//	}
 		//}
 	}
