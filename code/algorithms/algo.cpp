@@ -1,7 +1,8 @@
 #include "algo.h"
 #include "./word/word.h"
 
-int leveshtein(const Word& word, const Word& other) { return  min_distance(word, word.size(), other, other.size()); }
+
+int min_cost(int firstAction, int secondAction, int thirdAction) { return std::min(firstAction, std::min(secondAction, thirdAction)); }
 
 int min_distance(const Word& word, int size, const Word& other, int otherSize) {
     if (std::min(size, otherSize) == 0) return std::max(size, otherSize);
@@ -16,4 +17,4 @@ int min_distance(const Word& word, int size, const Word& other, int otherSize) {
     return min_cost(replacement, deletion, insertion);
 }
 
-int min_cost(int firstAction, int secondAction, int thirdAction) { return std::min(firstAction, std::min(secondAction, thirdAction)); }
+int leveshtein(const Word& word, const Word& other) { return  min_distance(word, word.size(), other, other.size()); }

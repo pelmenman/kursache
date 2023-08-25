@@ -23,9 +23,10 @@ public:
 		// 	OR levenshetin is already gives percentages so
 		//		(levenshtein(word, w) > 60)? coincidence.push(w) : continue;
 		//
-		// if we have hash instead of livenshtein then
+		// if we have hashes instead of livenshtein then
 		//		(word.hash() == w.hash())? check(word, w) : continue;
-		//
+		// 
+		// 
 		//
 		//	}
 		//}
