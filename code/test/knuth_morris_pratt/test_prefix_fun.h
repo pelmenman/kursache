@@ -3,4 +3,4 @@
 #include "../../algorithms/algo.h"
 #include <iostream>
 
-void testingKMP();
+void testingPrefix();

@@ -4,4 +4,7 @@
 
 int levenshtein(const Word& word, const Word& other);
 
-std::vector<size_t> knuthMorrisPratt(Word& word);
+//test it and then delete from header ?
+std::vector<size_t> prefix_fun(Word& word);
+
+void knuthMorrisPratt(Word& word, Word& other);

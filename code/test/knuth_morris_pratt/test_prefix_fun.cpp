@@ -1,7 +1,7 @@
-#include "test_knuth_morris_pratt.h"
+#include "test_prefix_fun.h"
 
-void testKMP(Word word, std::vector<size_t>& expected_pi, int num_test) {
-    std::vector<size_t> pi = knuthMorrisPratt(word);
+void testPrefix(Word word, std::vector<size_t>& expected_pi, int num_test) {
+    std::vector<size_t> pi = prefix_fun(word);
 
     if (pi == expected_pi) {
         std::cout << "Test " << num_test << " passed: " << '\n';
@@ -15,8 +15,8 @@ void testKMP(Word word, std::vector<size_t>& expected_pi, int num_test) {
 }
 
 
-void testingKMP() {
-    testKMP(Word("abacaba"), {0, 0, 1, 0, 1, 2, 3}, 1);
-    testKMP(Word("a"), {0}, 2);
-    testKMP(Word("abcdabeabf"), {0, 0, 0, 0, 1, 2, 0, 1, 2, 0}, 3);
+void testingPrefix() {
+    testPrefix(Word("abacaba"), {0, 0, 1, 0, 1, 2, 3}, 1);
+    testPrefix(Word("a"), {0}, 2);
+    testPrefix(Word("abcdabeabf"), {0, 0, 0, 0, 1, 2, 0, 1, 2, 0}, 3);
 }
