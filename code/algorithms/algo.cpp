@@ -35,5 +35,18 @@ std::vector<size_t> prefix_fun(Word& word) {
     return pi;
 }
 
-void knuthMorrisPratt(Word& word, Word& other) {
+//matchIndex: int or size_t?
+int knuthMorrisPratt(Word& word, Word& other) {
+    //TODO operator + for Words 
+    std::vector<size_t> result = prefix_fun(word + '#' + other);
+    int matchIndex = -1;
+
+    for (int i = (word.size() +  1); i < result.size(); i++) {
+        if (result[i] == word.size()) {
+            matchIndex = i - word.size() + 1;
+            break;
+        } 
+    }
+
+    return matchIndex;
 }
