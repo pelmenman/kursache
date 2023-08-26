@@ -1,9 +1,8 @@
-#include "algo.h"
-#include "./word/word.h"
+#include <algo/algo.h>
 
 int min_cost(int firstAction, int secondAction, int thirdAction) { return std::min(firstAction, std::min(secondAction, thirdAction)); }
 
-int min_distance(const Word& word, int size, const Word& other, int otherSize) {
+int min_distance(const Text::Word& word, int size, const Text::Word& other, int otherSize) {
     if (std::min(size, otherSize) == 0) return std::max(size, otherSize);
 
     int distance = word[size - 1] != other[otherSize - 1];
@@ -16,10 +15,10 @@ int min_distance(const Word& word, int size, const Word& other, int otherSize) {
     return min_cost(replacement, deletion, insertion);
 }
 
-int leveshtein(const Word& word, const Word& other) { return  min_distance(word, word.size(), other, other.size()); }
+int leveshtein(const Text::Word& word, const Text::Word& other) { return  min_distance(word, word.size(), other, other.size()); }
 
 
-std::vector<size_t> prefix_fun(Word& word) {
+std::vector<size_t> prefix_fun(Text::Word& word) {
     std::vector<size_t> pi(word.size(), 0);
 
     for (int i = 1; i < word.size(); i++) {
@@ -36,17 +35,22 @@ std::vector<size_t> prefix_fun(Word& word) {
 }
 
 //matchIndex: int or size_t?
-int knuthMorrisPratt(Word& word, Word& other) {
-    //TODO operator + for Words 
-    std::vector<size_t> result = prefix_fun(word + '#' + other);
-    int matchIndex = -1;
+// int knuthMorrisPratt(Text::Word& word, Text::Word& other) {
+//     //TODO operator + for Words 
+//     std::vector<size_t> result = prefix_fun(word + '#' + other);
+//     int matchIndex = -1;
 
-    for (int i = (word.size() +  1); i < result.size(); i++) {
-        if (result[i] == word.size()) {
-            matchIndex = i - word.size() + 1;
-            break;
-        } 
-    }
+//     for (int i = (word.size() +  1); i < result.size(); i++) {
+//         if (result[i] == word.size()) {
+//             matchIndex = i - word.size() + 1;
+//             break;
+//         } 
+//     }
 
-    return matchIndex;
+//     return matchIndex;
+// }
+
+
+void boyer_murr() {
+    
 }

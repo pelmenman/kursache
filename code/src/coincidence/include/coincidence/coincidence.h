@@ -1,5 +1,4 @@
-#include "word/Word.h"
-#include "text/Text.h"
+#include <text/text.h>
 #include <queue>
 #include <map>
 
@@ -7,7 +6,7 @@ class Coincidence {
 public: 
 	Coincidence() = default;
 
-	Coincidence(const Text& text, const Word& word): text(text), word(word) {};
+	Coincidence(const Text& text /*, const Text::Word& word*/): text(text) /*,word(word)*/ {};
 
 	void getCoincidence() {	
 		//TODO
@@ -34,8 +33,8 @@ public:
 
 private:
 	Text text; 
-	Word word;
-	std::priority_queue<Word, int> coincidences;
+	//Text::Word word;
+	std::priority_queue<Text::Word, int> coincidences;
 
 	//Levenshtein
 	int getPercentage(int count) { 

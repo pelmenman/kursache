@@ -1,21 +1,11 @@
 cmake_minimum_required(VERSION 3.25)
-project(cppProject)
+project(course_work)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(cppProject
-        main.cpp
-        word/Word.h
-        word/Word.cpp
-        test/word/test_word.cpp
-        test/word/test_word.h
-#        Levenshtein.h
-#        Levenshtein.cpp
-#        test/levenshtein/test_levenshtein.h
-#        test/levenshtein/test_levenshtein.cpp
-        text/Text.h
-        text/Text.cpp
-        test/text/test_text.h
-        test/text/test_text.cpp
-        ENV.h
-        )
+enable_testing()
+
+
+add_subdirectory(src)
+add_subdirectory(test)

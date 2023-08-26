@@ -3,3 +3,7 @@
 /.vs
 /.vscode
 
+/code/build/
+/code/.idea/
+/.idea/
+/.vscode/ 
