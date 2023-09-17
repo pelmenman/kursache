@@ -1,7 +1,9 @@
 add_subdirectory(algorithms)
 
-add_library(coincidence 
+add_library(coincidence
         coincidence.cpp
 )
 
 target_include_directories(coincidence PUBLIC include)
+
+target_link_libraries(coincidence algo)

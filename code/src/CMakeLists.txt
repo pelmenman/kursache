@@ -1,2 +1,2 @@
 add_subdirectory(text)
-#add_subdirectory(coincidence)
+add_subdirectory(coincidence)

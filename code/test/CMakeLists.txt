@@ -12,11 +12,14 @@ target_link_libraries(GTest::GTest INTERFACE gtest_main)
 add_executable(project_test 
   main.cpp
   word_test.cpp
-  text_test.cpp)
+  text_test.cpp
+  algo/boyer_mur_test.cpp)
 
 target_link_libraries(project_test
  PRIVATE
   GTest::GTest
-  text)
+  text
+  algo
+)
 
 add_test(project_gtests project_test)
