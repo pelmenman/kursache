@@ -1,5 +1,6 @@
 #include <vector>
 #include <functional>
+#include <string>
 
 //int levenshtein(const Text::Word& word, const Text::Word& other);
 
@@ -89,7 +90,27 @@ void boyer_mur(const Pattern& pattern, const Str& str, const std::vector<int>& c
 
 template<typename Pattern, typename Str>
 void knut_moris_pratt(const Pattern& pattern, const Str& str, const std::function<void(double, int)>& supplier) {
+    int len = pattern.size() + 1 + str.size();
+    auto concanated_index = [&str1 = pattern, &str2 = str](int index) {
+        return index < str1.size() ? str1[index] :
+               index == str1.size() ? '#' :
+               str2[index - str1.size() - 1];
+    };
 
+
+    std::vector<int> prefix_table(len);
+    for(int i = 1; i < len; ++i) {
+        int j = prefix_table[i - 1];
+        while(j > 0 && concanated_index(i) != concanated_index(j)) {
+                j = prefix_table[j - 1];
+        }
+        if(concanated_index(i) == concanated_index(j)) ++j;
+        prefix_table[i] = j;
+    }
+
+    for(int i = pattern.size(); i < len + 1; i++) {
+        if(prefix_table[i] == pattern.size()) supplier(1.0, i - 2*pattern.size());
+    }
 }
 
 

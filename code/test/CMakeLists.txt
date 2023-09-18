@@ -13,7 +13,8 @@ add_executable(project_test
   main.cpp
   word_test.cpp
   text_test.cpp
-  algo/boyer_mur_test.cpp)
+  algo/boyer_mur_test.cpp
+        algo/knut_morris_pratt_test.cpp)
 
 target_link_libraries(project_test
  PRIVATE
