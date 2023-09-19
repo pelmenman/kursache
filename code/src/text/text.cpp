@@ -4,7 +4,7 @@ bool isSymb(char c) {
     return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
 }
 
-Text::Text(std::string text): _text(std::move(text)) {
+Text::Text(std::string text, hash_func to_hash): _text(std::move(text)), to_hash(to_hash) {
     for(int i = 0; i < _text.size(); ++i) {
         if (isSymb(_text[i])) {
             int word_size = 0;

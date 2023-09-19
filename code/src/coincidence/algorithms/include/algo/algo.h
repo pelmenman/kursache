@@ -1,6 +1,8 @@
 #include <vector>
 #include <functional>
 #include <string>
+#include <cmath>
+#include "constants.h"
 
 //int levenshtein(const Text::Word& word, const Text::Word& other);
 
@@ -109,12 +111,64 @@ void knut_moris_pratt(const Pattern& pattern, const Str& str, const std::functio
     }
 
     for(int i = pattern.size(); i < len + 1; i++) {
-        if(prefix_table[i] == pattern.size()) supplier(1.0, i - 2*pattern.size());
+        prefix_table[i] == pattern.size() ?
+            supplier(1.0, i - 2*pattern.size()) :
+            void();
     }
 }
 
+//требует от Pattern и Str иметь метод hash()
+template<typename Pattern, typename Str>
+void hashMask(const Pattern& pattern,
+              const Str& str,
+              const std::function<void(double, int)>& supplier,
+              const std::function<double(const Pattern&, const Str&)>& percantage
+              )
+{
+    unsigned int res = pattern.hash() & str.hash();
+//    auto ones = [](unsigned int num){
+//        num = num - ((num >> 1) & 0x55555555);
+//        num = (num & 0x33333333) + ((num >> 2) & 0x33333333);
+//        num = (num + (num >> 4)) & 0x0f0f0f0f;
+//        num = num + (num >> 8);
+//        num = num + (num >> 16);
+//
+//        return num & 0x0000003F;
+//    }; // abd abc bad
+
+//    auto perc = [&str1 = pattern, &str2 = str](){
+//        int counter = 0;
+//        for(int i = 0; i < std::min(str1.size(), str2.size()); i++) {
+//            str1[i] == str2[i] ? counter++ : 0;
+//        }
+//        return counter;
+//    };
+
+//    if(res == str.hash()) {
+//        int counter = eq(pattern, str);
+//        if(counter/(str.size()) >= EQUAL_PERCANTAGE) supplier(counter/(str.size()));
+//    }
+    double perc = 0.0;
+    (pattern.hash() & str.hash()) == str.hash() ?
+        void() :
+        ((perc = percantage(pattern, str)) >= EQUAL_PERCANTAGE ?
+            supplier(perc ,str.pos()) :
+            void());
+}
 
 
-int hashMask();
+//требует от Pattern и Str иметь метод hash()
+template<typename Pattern, typename Str>
+void hashEq(const Pattern& pattern,
+             const Str& str,
+             const std::function<void(double, int)>& supplier)
+{
+    pattern.hash() == str.hash() ?
+        supplier(1.0, str.pos()) :
+        void();
+}
+
+// слова длины < 18
+template<typename >
 
 

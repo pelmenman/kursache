@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <tuple>
+#include "coincidence/algorithms/include/algo/constants.h"
 
 void ui() {
 
@@ -24,13 +25,23 @@ void mark_up(std::string s, std::vector<std::tuple<double, int>> res, int size) 
     }
 }
 
+void init() {
+    pows_two<32>::add_values(pows2);
+    exp(30);
+}
+
 int main() {
+    init();
+
     std::vector<std::tuple<double, int>> expected{
             std::make_tuple(1.0, 0),
             std::make_tuple(1.0, 10),
             std::make_tuple(1.0, 14),
             std::make_tuple(1.0, 18)
     };
+
+
+
 
     std::string text = "asdlkfjsdlasdfasdfasdaaahhjshdfaaa";
     mark_up(text, expected, 3);

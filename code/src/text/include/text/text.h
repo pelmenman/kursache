@@ -1,6 +1,9 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <functional>
+
+using hash_func = std::function<unsigned long long(const std::string&, int, int)>;
 
 class Text {
 public:
@@ -10,7 +13,9 @@ public:
         size_t size() const;
         Word(size_t _size, int _pos, const Text& _from);
 
-        char operator[](size_t index) const; 
+        char operator[](size_t index) const;
+
+        int pos() const;
     
     private:
         Word() = delete;
@@ -27,11 +32,12 @@ public:
     };
 public:
 
-    Text(std::string text);
+    Text(std::string text, hash_func to_hash);
 
     size_t size() const;
     const Word& operator[](int i) const;
 private:
     std::vector<Word> _words;
     std::string _text;
+    hash_func to_hash;
 };
