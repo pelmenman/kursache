@@ -1,23 +1,30 @@
 #include <text/text.h>
+#include <text/utils.h>
 
-bool isSymb(char c) {
-    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
-}
-
-Text::Text(std::string text, hash_func to_hash): _text(std::move(text)), to_hash(to_hash) {
-    for(int i = 0; i < _text.size(); ++i) {
-        if (isSymb(_text[i])) {
-            int word_size = 0;
-            int word_starts = i;
+Text::Text(std::shared_ptr<std::string> text, hash_func<std::string> to_hash)
+    : _text(text)
+{
+    for(int i = 0; i < _text->size(); ++i) {
+        if (is_symb(_text->operator[](i))) {
+            int size = 0;
+            int shift = i;
             for( ; ; ++i) {
-                if(!isSymb(_text[i])) break;
-                ++word_size;
+                if(!is_symb(_text->operator[](i))) break;
+                ++size;
             }
-            _words.emplace_back(word_size, word_starts, *this);
+            _words.emplace_back(_text, size, to_hash(*_text, shift, size), shift);
         }
     }
 }
 
+std::vector<Word>::iterator Text::begin() {
+    return _words.begin();
+}
+
+std::vector<Word>::iterator Text::end() {
+    return _words.end();
+}
+
 size_t Text::size() const { return _words.size(); }
 
-const Text::Word& Text::operator[](int i) const { return _words[i]; }
+const Word& Text::operator[](int i) const { return _words[i]; }

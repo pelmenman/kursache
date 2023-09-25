@@ -1,35 +1,29 @@
 #include <string>
-#include <text/text.h>
+#include <text/word.h>
 
-Text::Word::Word(size_t _size, int _pos, const Text& _from)
-                : _size(_size), _pos(_pos), _from(_from)
-{
-    _hash = _from.to_hash(_from._text, _pos, _size);
+Word::Word(
+        std::shared_ptr<std::string> text,
+        size_t size,
+        unsigned int hash_val,
+        int pos)
+        : _text(text),
+          _size(size),
+          _hash(hash_val),
+          _pos(pos)
+{}
+
+size_t Word::size() const { return _size; }
+
+unsigned long long Word::hash() const { return _hash; }
+
+std::string Word::str() const {
+    return _text->substr(_pos, _size);
 }
 
-size_t Text::Word::size() const { return _size; }
+char Word::operator[](size_t index) const { return _text->operator[](_pos + index); }
 
-unsigned long long Text::Word::hash() const { return _hash; }
-
-std::string Text::Word::str() const {
-    return _from._text.substr(_pos, _size);
-}
-
-//unsigned int code(char c) { return islower(c) ? (c - 'a') + 1 : (c - 'A') + 1; }
-
-//void Text::Word::hashing() {
-//    unsigned long long exp = 1;
-//    _hash = 0;
-//    for (int i = 0; i < _size; ++i) {
-//        _hash = ((_hash + code(_from._text[_pos + i]) * exp) % MOD) % MOD;
-//        exp = (exp * ALPHABET_SIZE) % MOD;
-//    }
-//}
-
-char Text::Word::operator[](size_t index) const { return _from._text[_pos + index]; }
-
-std::ostream& operator<<(std::ostream &os, const Text::Word& word) {
+std::ostream& operator<<(std::ostream &os, const Word& word) {
     return os << word.str();
 }
 
-int Text::Word::pos() const { return _pos; }
+int Word::pos() const { return _pos; }

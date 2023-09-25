@@ -1,31 +1,76 @@
 #include <algo/predictor.h>
 
+BasePredictor::BasePredictor(std::string pattern)
+    : _pattern(std::move(pattern))
+{}
+
+KnutMorisPrattPredictor::KnutMorisPrattPredictor(std::string pattern)
+    : BasePredictor(std::move(pattern))
+{}
+
 void
-KnutMorisPrattPredictor::operator()(const Text::Word& pattern, const Text::Word &word) const { // 2 hour
-    return pattern.size() > word.size() ?
+KnutMorisPrattPredictor::operator()(const Word &word) const { // 2 hour
+    return _pattern.size() > word.size() ?
            void() :
-           knut_moris_pratt(pattern, word, supplier);
+           knut_moris_pratt(_pattern, word, _supplier, code);
+}
+
+HashMaskPredictor::HashMaskPredictor(std::string pattern)
+    : BasePredictor(std::move(pattern))
+{
+    _mask = mask_substr_hash(_pattern, 0, _pattern.size());
 }
 
 void
-HashMaskPredictor::operator()(const Text::Word &pattern, const Text::Word &word) const {} // 1 hour
+HashMaskPredictor::operator()(const Word &word) const {
+    hash_mask(_pattern, word, _mask, word.hash(), word.pos(), _supplier);
+}
 
-void
-BoyerMurPredictor::operator()(const Text::Word &pattern, const Text::Word &word) const {
-    return pattern.size() > word.size() ?
-           void() :
-           boyer_mur(pattern, word, bad_chars, good_suffix, supplier);
+BoyerMurPredictor::BoyerMurPredictor(std::string pattern)
+    : BasePredictor(std::move(pattern))
+{
+    _bad_chars = std::move(bad_char(pattern, code, ALPHABET_SIZE));
 }
 
 void
-LevenshteinPredictor::operator()(const Text::Word &pattern, const Text::Word &word) const {} // 1 hour
+BoyerMurPredictor::operator()(const Word &word) const {
+    return _pattern.size() > word.size() ?
+           void() :
+           boyer_mur(_pattern, word, _bad_chars, _supplier, code);
+}
+
+LevenshteinPredictor::LevenshteinPredictor(std::string pattern)
+    : BasePredictor(std::move(pattern))
+{}
 
 void
-WeakHashPredictor::operator()(const Text::Word &pattern, const Text::Word &word) const {} // 1 hour
+LevenshteinPredictor::operator()(const Word &word) const {
+    int sz_diff = _pattern.size() > word.size() ? _pattern.size() : word.size();
+    return sz_diff > _pattern.size() || sz_diff > word.size() ?
+            void() :
+           levenshtein(_pattern, word, _supplier);
+}
 
-void
-MetricPredictor::operator()(const Text::Word &pattern, const Text::Word &word) const {} // 1 hour
+WeakCodePredictor::WeakCodePredictor(std::string pattern)
+    : BasePredictor(std::move(pattern))
+{}
+
+void // weak code predictor
+WeakCodePredictor::operator()(const Word &word) const {
+    return _pattern.size() > word.size() ?
+           void() :
+           knut_moris_pratt(_pattern, word, _supplier, weak_code);
+}
+
+HashEqualPredictor::HashEqualPredictor(std::string pattern)
+    : BasePredictor(std::move(pattern))
+{
+    _pattern_hash = poly_substr_hash(_pattern, 0, _pattern.size());
+}
+
+void //weak hash + default hash
+HashEqualPredictor::operator()(const Word &word) const {
+    hash_eq(_pattern_hash, word.hash(), word.pos(), _supplier);
+}
 
 //hash aho - 1 hour
-
-// с предобработкой - 1 hour

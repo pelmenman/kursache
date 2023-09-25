@@ -2,44 +2,52 @@
 #include <text/text.h>
 #include <functional>
 
-class BasePredictor { //pattern in predictor
+class BasePredictor { //_pattern in predictor
+protected:
+    std::string _pattern;
 public:
-    std::function<void(double, int)> supplier;
-    virtual void operator()(const Text::Word& pattern,const Text::Word& word) const;
+    BasePredictor(std::string pattern);
+    std::function<void(double, int)> _supplier;
+    virtual void operator()(const Word& word) const = 0;
 };
 
 class KnutMorisPrattPredictor: public BasePredictor {
 public:
-    void operator()(const Text::Word& pattern,const Text::Word& word) const override;
+    explicit KnutMorisPrattPredictor(std::string pattern);
+    void operator()(const Word& word) const override;
 };
 
-class HashMaskPredictor: public BasePredictor {
+class HashMaskPredictor: protected BasePredictor {
+    unsigned int _mask;
 public:
-    void operator()(const Text::Word& pattern,const Text::Word& word) const override;
+    explicit HashMaskPredictor(std::string pattern);
+    void operator()(const Word& word) const override;
 };
 
 class BoyerMurPredictor: public BasePredictor {
-    std::string pattern;
-    std::vector<int> bad_chars;
-    std::vector<int> good_suffix;
+    std::vector<int> _bad_chars;
 public:
-    void operator()(const Text::Word& pattern,const Text::Word& word) const override;
+    explicit BoyerMurPredictor(std::string pattern);
+    void operator()(const Word& word) const override;
 
-    BoyerMurPredictor(std::string pattern);
 };
 
 class LevenshteinPredictor: public BasePredictor {
 public:
-    void operator()(const Text::Word& pattern,const Text::Word& word) const override;
+    explicit LevenshteinPredictor(std::string pattern);
+    void operator()(const Word& word) const override;
 };
 
-class WeakHashPredictor: public BasePredictor { //predicts only 18 signs word
+class WeakCodePredictor: public BasePredictor { //predicts only 18 signs word
 public:
-    void operator()(const Text::Word& pattern,const Text::Word& word) const override;
+    explicit WeakCodePredictor(std::string pattern);
+    void operator()(const Word& word) const override;
 };
 
-class MetricPredictor: public BasePredictor { // predicts on base metric
+class HashEqualPredictor: public BasePredictor { //predicts only 18 signs word
+    unsigned long long _pattern_hash;
 public:
-    void operator()(const Text::Word& pattern,const Text::Word& word) const override;
+    explicit HashEqualPredictor(std::string pattern);
+    void operator()(const Word& word) const override;
 };
 

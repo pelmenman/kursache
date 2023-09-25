@@ -2,76 +2,87 @@
 #include <functional>
 #include <string>
 #include <cmath>
-#include "constants.h"
+#include <algo/hash.h>
 
-//int levenshtein(const Text::Word& word, const Text::Word& other);
+using supplier = std::function<void(double ,int)>;
+using encoder = std::function<unsigned int(char)>;
+using percentager = std::function<double(int, int)>;
+using table = std::vector<std::vector<int>>;
 
-////test it and then delete from header ?
-//std::vector<size_t> prefix_fun(Text::Word& word);
+template<typename Pattern, typename Str>
+void dist(const Pattern& pattern,
+          const Str& str,
+          const encoder& encoder,
+          table& table,
+          const percentager& percentager,
+          const supplier& supplier)
+{
+    int curr_row = 1;
+    int len_p = pattern.size();
+    int len_s = str.size();
+    double diff = 0;
 
-//int knuthMorrisPratt(const Text::Word& word,const Text::Word& other);
 
+    for(int i = 1; i < len_p + 1; i++) {
+        table[curr_row][0] = table[(curr_row + 1) % 2][0] + 1;
+        curr_row = (curr_row + 1) % 2;
 
-// Спрашивает является подстрока префиксом
-template<typename Str>
-bool is_prefix(const Str& pattern, int start) {
-    int j = 0;
-    for(int i = start; i < pattern.size(); i++) {
-        if(pattern[i] != pattern[j]) return false;
-        ++j;
+        for(int j = 1; j < len_s + 1; j++) {
+            int add = table[(curr_row + 1 % 2)][j] + 1;
+            int del = table[curr_row][j - 1] + 1;
+            int repl = table[(curr_row + 1 % 2)][j - 1];
+            repl += encoder(pattern[j - 1]) != encoder(str[j - 1]) ? 1 : 0;
+
+            table[curr_row][j] = std::min(std::min(add, del), repl);
+            diff = std::max(diff, percentager(table[curr_row][j], len_s));
+
+            if(diff > 1 - EQUAL_PERCANTAGE) return;
+        }
     }
-    return true;
+
+    supplier(
+            1 - percentager(table[curr_row][len_s], len_s),
+            str.pos());
 }
 
-// Вычисялет максимальную длину подстроки начиная с start которая одновременно является суффиксом
-template<typename Str>
-int max_suffix_len(const Str& pattern, int start) {
-    int len = 0;
-    int i = start;
-    int j = pattern.size() - 1;
-    while(i >= 0 && pattern[i] == pattern[j]) {
-        ++len;
-        --i;
-        --j;
-    }
-    return len;
-}
+template<typename Pattern, typename Str>
+void levenshtein(const Pattern& pattern, const Str& str, const supplier& supplier) {
+    int len_s = str.size();
+    table table(2, std::vector<int>(len_s + 1, 0));
+    table[1][0] = 1;
 
+    for(int i = 1; i < len_s + 1; i++) table[0][i] = i;
 
-// Вычисляет эврстику "хорошего" суффикса
-template<typename Str>
-std::vector<int> good_suffix(const Str& pattern) {
-    int len = pattern.size();
-    std::vector<int> table(len);
+    auto percent = [](int diff, int sz) {
+        return ((double)diff) / sz;
+    };
 
-    int last_pref_pos = len;
-    for(int i = len - 1; i >= 0; i--) {
-        if(is_prefix(pattern, i + 1)) last_pref_pos = i + 1;
-        table[len - 1 - i] = last_pref_pos - i + len - 1;
-    }
-    for(int i = 0; i < len - 1; i++) {
-        int suff_len = max_suffix_len(pattern, i);
-        table[suff_len] = len - 1 - i + suff_len;
-    }
-
-    return table;
+    dist(pattern, str, code, table, percent, supplier);
 }
 
 // Вычисляет эвристику "плохого" символа
 template<typename Str>
-std::vector<int> bad_char(const Str& pattern) {
+std::vector<int> bad_char(const Str& pattern,
+                          const encoder& encoder,
+                          int alph_size)
+{
     int len = pattern.size();
-    std::vector<int> table(26, len);
+    std::vector<int> table(alph_size, len);
 
     for(int i = 0; i < len - 1; i++) {
-        table[pattern[i] - 'a'] = len - 1 - i;
+        table[encoder(pattern[i])] = len - 1 - i;
     }
 
     return table;
 }
 
 template<typename Pattern, typename Str>
-void boyer_mur(const Pattern& pattern, const Str& str, const std::vector<int>& chars, const std::vector<int>& suffixes, const std::function<void(double ,int)>& supplier) {
+void boyer_mur(const Pattern& pattern,
+               const Str& str,
+               const std::vector<int>& chars,
+               const supplier& supplier,
+               const encoder& encoder)
+{
     int pattern_len = pattern.size();
     int str_size = str.size();
 
@@ -79,24 +90,28 @@ void boyer_mur(const Pattern& pattern, const Str& str, const std::vector<int>& c
 
     for(int i = 0; i <= str_size - pattern_len; ) {
         int j = pattern_len - 1;
-        while(pattern[j] == str[i + j]) {
+        while(encoder(pattern[j]) == encoder(str[i + j])) {
             if(j == 0) {
                 supplier(1.0, i);
                 break;
             }
             --j;
         }
-        i += chars[str[i + j] - 'a'];/*std::max(chars[str[i] - 'a'], suffixes[pattern_len - 1 - j]);*/
+        i += chars[encoder(str[i + j])];
     }
 }
 
 template<typename Pattern, typename Str>
-void knut_moris_pratt(const Pattern& pattern, const Str& str, const std::function<void(double, int)>& supplier) {
+void knut_moris_pratt(const Pattern& pattern,
+                      const Str& str,
+                      const supplier& supplier,
+                      const encoder& encoder)
+{
     int len = pattern.size() + 1 + str.size();
-    auto concanated_index = [&str1 = pattern, &str2 = str](int index) {
-        return index < str1.size() ? str1[index] :
+    auto concanated_index = [&str1 = pattern, &str2 = str, &coder = encoder](int index) {
+        return index < str1.size() ? coder(str1[index]) :
                index == str1.size() ? '#' :
-               str2[index - str1.size() - 1];
+               coder(str2[index - str1.size() - 1]);
     };
 
 
@@ -104,7 +119,7 @@ void knut_moris_pratt(const Pattern& pattern, const Str& str, const std::functio
     for(int i = 1; i < len; ++i) {
         int j = prefix_table[i - 1];
         while(j > 0 && concanated_index(i) != concanated_index(j)) {
-                j = prefix_table[j - 1];
+            j = prefix_table[j - 1];
         }
         if(concanated_index(i) == concanated_index(j)) ++j;
         prefix_table[i] = j;
@@ -112,20 +127,21 @@ void knut_moris_pratt(const Pattern& pattern, const Str& str, const std::functio
 
     for(int i = pattern.size(); i < len + 1; i++) {
         prefix_table[i] == pattern.size() ?
-            supplier(1.0, i - 2*pattern.size()) :
-            void();
+        supplier(1.0, i - 2*pattern.size()) :
+        void();
     }
 }
 
-//требует от Pattern и Str иметь метод hash()
+//требует от Pattern и Str
 template<typename Pattern, typename Str>
-void hashMask(const Pattern& pattern,
+void hash_mask(const Pattern& pattern,
               const Str& str,
-              const std::function<void(double, int)>& supplier,
-              const std::function<double(const Pattern&, const Str&)>& percantage
-              )
+              unsigned int pattern_mask,
+              unsigned int str_mask,
+              int str_pos,
+              const supplier& supplier)
 {
-    unsigned int res = pattern.hash() & str.hash();
+//    unsigned int res = _pattern.hash() & str.hash();
 //    auto ones = [](unsigned int num){
 //        num = num - ((num >> 1) & 0x55555555);
 //        num = (num & 0x33333333) + ((num >> 2) & 0x33333333);
@@ -134,41 +150,35 @@ void hashMask(const Pattern& pattern,
 //        num = num + (num >> 16);
 //
 //        return num & 0x0000003F;
-//    }; // abd abc bad
-
-//    auto perc = [&str1 = pattern, &str2 = str](){
-//        int counter = 0;
-//        for(int i = 0; i < std::min(str1.size(), str2.size()); i++) {
-//            str1[i] == str2[i] ? counter++ : 0;
-//        }
-//        return counter;
 //    };
 
-//    if(res == str.hash()) {
-//        int counter = eq(pattern, str);
-//        if(counter/(str.size()) >= EQUAL_PERCANTAGE) supplier(counter/(str.size()));
-//    }
+    auto percent = [&str1 = pattern, &str2 = str]() {
+        int counter = 0;
+        for (int i = 0; i < std::min(str1.size(), str2.size()); i++) {
+            str1[i] == str2[i] ? counter++ : 0;
+        }
+        return ((double)counter) / std::max(str1.size(), str2.size());
+    };
+
     double perc = 0.0;
-    (pattern.hash() & str.hash()) == str.hash() ?
-        void() :
-        ((perc = percantage(pattern, str)) >= EQUAL_PERCANTAGE ?
-            supplier(perc ,str.pos()) :
-            void());
-}
-
-
-//требует от Pattern и Str иметь метод hash()
-template<typename Pattern, typename Str>
-void hashEq(const Pattern& pattern,
-             const Str& str,
-             const std::function<void(double, int)>& supplier)
-{
-    pattern.hash() == str.hash() ?
-        supplier(1.0, str.pos()) :
+    (pattern_mask & str_mask) == str_mask ?
+        ((perc = percent()) >= EQUAL_PERCANTAGE ?
+            supplier(perc ,str_pos) :
+            void()) :
         void();
 }
 
-// слова длины < 18
-template<typename >
+
+//требует от Pattern и Str -> также для weak hash
+void hash_eq(unsigned long long pattern_hash,
+             unsigned long long str_hash,
+             int str_pos,
+             const supplier& supplier)
+{
+    pattern_hash == str_hash ?
+    supplier(1.0, str_pos) :
+    void();
+}
+
 
 

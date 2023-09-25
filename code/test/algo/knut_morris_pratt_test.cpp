@@ -9,8 +9,6 @@ TEST(AlgoTests, KMPTest) {
         coincidences.emplace_back(per, pos);
     };
     std::string text = "asdlkfjsdlasdfasdfasdaaahhjshdfaaa";
-    auto bad_chars = bad_char(pattern);
-    auto good_suffixes = good_suffix(pattern);
     std::vector<std::tuple<double, int>> expected{
             std::make_tuple(1.0, 0),
             std::make_tuple(1.0, 10),
@@ -19,7 +17,7 @@ TEST(AlgoTests, KMPTest) {
     };
 
     //when
-    knut_moris_pratt(pattern, text, supplier);
+    knut_moris_pratt(pattern, text, supplier, code);
 
     //then
     ASSERT_EQ(coincidences, expected);

@@ -1,9 +1,9 @@
 #include <text/text.h>
+#include <algo/hash.h>
 #include <gtest/gtest.h>
 
-const auto text = Text(
-    "hello from"  
-);
+const auto some_text = std::make_shared<std::string>("hello from");
+const Text text(some_text, poly_substr_hash<std::string>);
 
 TEST(WordTests, TestHash) {
     //given
