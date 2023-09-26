@@ -1,5 +1,3 @@
-add_subdirectory(algorithms)
-
 add_library(coincidence
         coincidence.cpp
         preprocessed_coincidence.cpp

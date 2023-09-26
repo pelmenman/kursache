@@ -1,4 +1,4 @@
-add_library(text 
+add_library(text
         word.cpp
         text.cpp
         grouped_text.cpp

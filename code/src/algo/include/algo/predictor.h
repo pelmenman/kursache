@@ -1,5 +1,5 @@
 #include <algo/algo.h>
-#include <text/text.h>
+#include <text/grouped_text.h>
 #include <functional>
 
 class BasePredictor { //_pattern in predictor

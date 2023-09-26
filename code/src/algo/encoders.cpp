@@ -1,4 +1,4 @@
-#include <algo/hash.h>
+#include <algo/encoders.h>
 
 unsigned int code(char c) {
     return islower(c) ?

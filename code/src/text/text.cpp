@@ -1,7 +1,7 @@
 #include <text/text.h>
-#include <text/utils.h>
 
-Text::Text(std::shared_ptr<std::string> text, hash_func<std::string> to_hash)
+Text::Text(std::shared_ptr<std::string> text,
+           const hash_func& to_hash)
     : _text(text)
 {
     for(int i = 0; i < _text->size(); ++i) {
@@ -12,7 +12,7 @@ Text::Text(std::shared_ptr<std::string> text, hash_func<std::string> to_hash)
                 if(!is_symb(_text->operator[](i))) break;
                 ++size;
             }
-            _words.emplace_back(_text, size, to_hash(*_text, shift, size), shift);
+            _words.emplace_back(_text, size, to_hash(*_text, size, shift), shift);
         }
     }
 }

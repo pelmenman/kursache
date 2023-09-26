@@ -1,4 +1,4 @@
-#include <algo/algo.h>
+#include <coincidence/all.h>
 #include <gtest/gtest.h>
 #include <vector>
 
@@ -10,7 +10,7 @@ TEST(AlgoTests, BoyerMurTest) {
         coincidences.emplace_back(per, pos);
     };
     std::string text = "asdlkfjsdlasdfasdfasdaaahhjshdfaaa";
-    auto bad_chars = bad_char(pattern, code, ALPHABET_SIZE);
+    auto bad_chars = bad_char(pattern, ALPHABET_SIZE);
     std::vector<std::tuple<double, int>> expected {
         std::make_tuple(1.0, 0),
         std::make_tuple(1.0, 10),
@@ -19,7 +19,7 @@ TEST(AlgoTests, BoyerMurTest) {
     };
 
     //when
-    boyer_mur(pattern, text, bad_chars, supplier, code);
+    boyer_mur(pattern, text, bad_chars, supplier);
 
     //then
 
