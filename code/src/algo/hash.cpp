@@ -7,7 +7,7 @@ unsigned long long poly_substr_weak_hash(
 {
     unsigned long long _hash = 0;
     for (int i = 0; i < _size; ++i) {
-        _hash = (_hash + (((weak_code(str[_shift + i]) + 1) * exp(i, WEAK_ALPHABET_SIZE)) % MOD) ) % MOD;
+        _hash = (_hash + (((weak_code(str[_shift + i])) * exp_weak(i)) % MOD) ) % MOD;
     }
 
     return _hash;
@@ -34,7 +34,7 @@ unsigned long long poly_substr_hash(
 {
     unsigned long long _hash = 0;
     for (int i = 0; i < _size; ++i) {
-        _hash = (_hash + ((code(str[_shift + i]) * exp(i, ALPHABET_SIZE)) % MOD) ) % MOD;
+        _hash = (_hash + ((code(str[_shift + i]) * exp(i)) % MOD) ) % MOD;
     }
 
     return _hash;

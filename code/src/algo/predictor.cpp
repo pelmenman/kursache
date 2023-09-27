@@ -10,7 +10,7 @@ KnutMorisPrattPredictor::KnutMorisPrattPredictor(std::string pattern) //OK
 
 void
 KnutMorisPrattPredictor::operator()(const Word &word) const { // OK
-    return _pattern.size() > word.size() ?
+    _pattern.size() > word.size() ?
            void() :
            knut_moris_pratt(_pattern, word, _supplier, word.pos());
 }

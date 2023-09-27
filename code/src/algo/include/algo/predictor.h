@@ -3,10 +3,9 @@
 #include <functional>
 
 class BasePredictor { //_pattern in predictor
-protected:
-    std::string _pattern;
 public:
     BasePredictor(std::string pattern);
+    const std::string _pattern;
     std::function<void(double, int)> _supplier;
     virtual void operator()(const Word& word) const = 0;
 };
@@ -17,7 +16,7 @@ public:
     void operator()(const Word& word) const override;
 };
 
-class HashMaskPredictor: protected BasePredictor {
+class HashMaskPredictor: public BasePredictor {
     unsigned int _mask;
 public:
     explicit HashMaskPredictor(std::string pattern);

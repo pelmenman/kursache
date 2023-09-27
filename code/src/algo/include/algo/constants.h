@@ -7,14 +7,26 @@ static const double EQUAL_PERCENTAGE = 0.5;
 
 static std::vector<unsigned long long> vals(1, 1);
 
-static unsigned long long exp(int pow, int alph) {
+static unsigned long long exp(int pow) {
     if(pow < vals.size()) return vals[pow];
 
     for(size_t i = vals.size(); i <= pow; i++) {
-        vals.push_back((vals[i - 1] * alph) % MOD);
+        vals.push_back((vals[i - 1] * ALPHABET_SIZE) % MOD);
     }
 
     return vals[pow];
+}
+
+static std::vector<unsigned long long> vals_weak(1, 1);
+
+static unsigned long long exp_weak(int pow) {
+    if(pow < vals_weak.size()) return vals_weak[pow];
+
+    for(size_t i = vals_weak.size(); i <= pow; i++) {
+        vals_weak.push_back((vals_weak[i - 1] * WEAK_ALPHABET_SIZE) % MOD);
+    }
+
+    return vals_weak[pow];
 }
 
 template <unsigned int N>

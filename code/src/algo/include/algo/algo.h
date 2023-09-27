@@ -34,10 +34,10 @@ void knut_moris_pratt(const Pattern& pattern,
         prefix_table[i] = j;
     }
 
-    for(int i = pattern.size(); i < len + 1; i++) {
+    for(int i = pattern.size(); i < len; i++) {
         prefix_table[i] == pattern.size() ?
-        supplier(1.0, str_pos + (i - 2*pattern.size())) :
-        void();
+            supplier(1.0, str_pos + (i - 2*pattern.size())) :
+            void();
     }
 }
 
@@ -71,7 +71,7 @@ void hash_mask(const Pattern& pattern,
     double perc = 0.0;
     (pattern_mask & str_mask) >= pattern_mask ?
         ((perc = percent()) >= EQUAL_PERCENTAGE ?
-            supplier(perc ,str_pos) :
+            supplier(perc, str_pos) :
             void()) :
     void();
 }

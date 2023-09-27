@@ -32,10 +32,10 @@ TEST(HashTests, TestingWeakHash) {
 
     //then
     ASSERT_EQ(hash,
-              (weak_code('h') + 1) +
-              (weak_code('e') + 1)*WEAK_ALPHABET_SIZE +
-              (weak_code('l') + 1)*WEAK_ALPHABET_SIZE*WEAK_ALPHABET_SIZE +
-              (weak_code('l') + 1)*WEAK_ALPHABET_SIZE*WEAK_ALPHABET_SIZE*WEAK_ALPHABET_SIZE +
-              (weak_code('o') + 1)*WEAK_ALPHABET_SIZE*WEAK_ALPHABET_SIZE*WEAK_ALPHABET_SIZE*WEAK_ALPHABET_SIZE);
+              (weak_code('h')) +
+              (weak_code('e'))*WEAK_ALPHABET_SIZE +
+              (weak_code('l'))*WEAK_ALPHABET_SIZE*WEAK_ALPHABET_SIZE +
+              (weak_code('l'))*WEAK_ALPHABET_SIZE*WEAK_ALPHABET_SIZE*WEAK_ALPHABET_SIZE +
+              (weak_code('o'))*WEAK_ALPHABET_SIZE*WEAK_ALPHABET_SIZE*WEAK_ALPHABET_SIZE*WEAK_ALPHABET_SIZE);
 
 }

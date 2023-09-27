@@ -6,27 +6,27 @@ template<typename Predictor>
 class Coincidence {
 public:
     Coincidence(const Text& text, Predictor predictor)
-        : text(text), predictor(predictor)
+        : _text(text), _predictor(predictor)
     {
-        predictor._supplier = [&res = this->coincidences](double per, int pos) {
+        _predictor._supplier = [&res = this->_coincidences](double per, int pos) {
             res.emplace_back(per, pos);
         };
     }
 
 	void find() {
-        int len = text.size();
+        int len = _text.size();
 
         for(int i = 0; i < len; i++) {
-            predictor(text[i]);
+            _predictor(_text[i]);
         }
     }
 
     const std::vector<std::tuple<double, int>>& get() {
-        return coincidences;
+        return _coincidences;
     }
 private:
-    Predictor predictor;
-	const Text& text;
+    Predictor _predictor;
+	const Text& _text;
 
-	std::vector<std::tuple<double, int>> coincidences;
+	std::vector<std::tuple<double, int>> _coincidences;
 };

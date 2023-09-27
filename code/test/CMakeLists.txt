@@ -21,6 +21,7 @@ add_executable(project_test
         algo/hash_eq_test.cpp
         text/grouped_text_test.cpp
         coincidence/coincidence_test.cpp
+        coincidence/preprocessed_coincidence_test.cpp
 )
 
 target_link_libraries(project_test
