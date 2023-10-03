@@ -6,8 +6,8 @@ void hash_eq(unsigned long long pattern_hash,
              const int str_pos)
 {
     pattern_hash == str_hash ?
-    supplier(1.0, str_pos) :
-    void();
+        supplier(1.0, str_pos) :
+        void();
 }
 
 

@@ -35,7 +35,7 @@ void GroupedText::preprocessing(const hash_func& mask, const hash_func& to_hash)
             if(_grouped.find(hashed_mask) == _grouped.end()) _grouped[hashed_mask] = std::list<Word>();
 
             _grouped.find(hashed_mask)->second.emplace_back(
-                    _text, size,to_hash(*_text, shift, size),shift);
+                    _text, size,to_hash(*_text, size, shift),shift);
         }
     }
 }

@@ -71,7 +71,8 @@ void hash_mask(const Pattern& pattern,
     double perc = 0.0;
     (pattern_mask & str_mask) >= pattern_mask ?
         ((perc = percent()) >= EQUAL_PERCENTAGE ?
-            supplier(perc, str_pos) :
+            //supplier(perc, str_pos) :
+            supplier(round((perc)*100)/100, str_pos) :
             void()) :
     void();
 }
@@ -153,7 +154,8 @@ void dist(const Pattern& pattern,
 
     double diff = percentager(table[curr_row][len_s], len_s);
     diff < 1.0 - EQUAL_PERCENTAGE ?
-        supplier(1.0 - diff, str_pos) :
+        //supplier(1.0 - diff, str_pos) :
+        supplier(round((1.0 - diff)*100)/100, str_pos) :
         void();
 }
 

@@ -1,6 +1,6 @@
 #include <vector>
 
-static const unsigned long long MOD = 10e9 + 7;
+static const unsigned long long MOD = 1e9 + 7;
 static const unsigned int ALPHABET_SIZE = 31;
 static const unsigned int WEAK_ALPHABET_SIZE = 17;
 static const double EQUAL_PERCENTAGE = 0.5;
