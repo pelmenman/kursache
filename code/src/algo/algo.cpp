@@ -11,5 +11,3 @@ void hash_eq(unsigned long long pattern_hash,
 }
 
 
-
-

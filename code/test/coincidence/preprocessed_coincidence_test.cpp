@@ -6,8 +6,8 @@ TEST(PreprocessedCoincidence, KMPPredictor) {
     const auto str = std::make_shared<std::string>("zasdfasfhello my ggg bb fa frienfadzzzhello!!");
     GroupedText text(str, mask_substr_hash, poly_substr_hash);
 
-    KnutMorisPrattPredictor predictor("fa");
-    PreprocessedCoincidence<KnutMorisPrattPredictor> prep_coincidence(text, predictor);
+    KnuthMorrisPrattPredictor predictor("fa");
+    PreprocessedCoincidence<KnuthMorrisPrattPredictor> prep_coincidence(text, predictor);
     std::vector<std::tuple<double, int>> expected {
             std::make_tuple(1, 24),
             std::make_tuple(1, 32),

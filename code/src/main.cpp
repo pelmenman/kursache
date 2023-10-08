@@ -66,8 +66,8 @@ int main() {
 
     std::cout << "Text with 200 words: finds \"patients\" " << '\n';
 
-    std::cout << "KnuttMorisPrattPredictor: " << byTextSize<KnutMorisPrattPredictor>(txt, "patients") << '\n';
-    std::cout << "BoyerMurPredictor: " << byTextSize<BoyerMurPredictor>(txt, "patients") << '\n';
+    std::cout << "KnuttMorisPrattPredictor: " << byTextSize<KnuthMorrisPrattPredictor>(txt, "patients") << '\n';
+    std::cout << "BoyerMurPredictor: " << byTextSize<BoyerMoorePredictor>(txt, "patients") << '\n';
     std::cout << "HashMaskPredictor: " << byTextSize<HashMaskPredictor>(txt, "patients") << '\n';
     std::cout << "LevenshteinPredictor: " << byTextSize<LevenshteinPredictor>(txt, "patients") << '\n';
     std::cout << "WeakCodePredictor: " << byTextSize<WeakCodePredictor>(txt, "patients") << '\n';

@@ -16,7 +16,6 @@ TEST(GroupedTextTests, GroupedTextSize) {
 
 TEST(GroupedTextTests, GroupSize) {
     //given
-    //pows_two<32>::add_values(pows2);
     const auto str = std::make_shared<std::string>("hello oleh hell rare");
     GroupedText text(str, mask_substr_hash, poly_substr_hash);
     auto expected_group_size = 2;

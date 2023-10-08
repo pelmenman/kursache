@@ -2,51 +2,51 @@
 #include <text/grouped_text.h>
 #include <functional>
 
-class BasePredictor { //_pattern in predictor
+class BasePredictor {
 public:
-    BasePredictor(std::string pattern);
-    const std::string _pattern;
+    BasePredictor(const std::string& pattern);
+    const std::string& _pattern;
     std::function<void(double, int)> _supplier;
     virtual void operator()(const Word& word) const = 0;
 };
 
-class KnutMorisPrattPredictor: public BasePredictor {
+class KnuthMorrisPrattPredictor: public BasePredictor {
 public:
-    explicit KnutMorisPrattPredictor(std::string pattern);
+    explicit KnuthMorrisPrattPredictor(const std::string& pattern);
     void operator()(const Word& word) const override;
 };
 
 class HashMaskPredictor: public BasePredictor {
     unsigned int _mask;
 public:
-    explicit HashMaskPredictor(std::string pattern);
+    explicit HashMaskPredictor(const std::string& pattern);
     void operator()(const Word& word) const override;
 };
 
-class BoyerMurPredictor: public BasePredictor {
+class BoyerMoorePredictor: public BasePredictor {
     std::vector<int> _bad_chars;
 public:
-    explicit BoyerMurPredictor(std::string pattern);
+    explicit BoyerMoorePredictor(const std::string& pattern);
     void operator()(const Word& word) const override;
 
 };
 
 class LevenshteinPredictor: public BasePredictor {
 public:
-    explicit LevenshteinPredictor(std::string pattern);
+    explicit LevenshteinPredictor(const std::string& pattern);
     void operator()(const Word& word) const override;
 };
 
-class WeakCodePredictor: public BasePredictor { //predicts only 18 signs word
+class WeakCodePredictor: public BasePredictor {
 public:
-    explicit WeakCodePredictor(std::string pattern);
+    explicit WeakCodePredictor(const std::string& pattern);
     void operator()(const Word& word) const override;
 };
 
-class HashEqualPredictor: public BasePredictor { //predicts only 18 signs word
+class HashEqualPredictor: public BasePredictor {
     unsigned long long _pattern_hash;
 public:
-    explicit HashEqualPredictor(std::string pattern);
+    explicit HashEqualPredictor(const std::string& pattern);
     void operator()(const Word& word) const override;
 };
 

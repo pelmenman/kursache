@@ -14,8 +14,7 @@ public:
     size_t size() const;
     const Word& operator[](int i) const;
 
-//    Text(const Text& text) = default;
-    //Text(Text&& text) = default;
+    //may have copy constructor or move
 private:
     std::vector<Word> _words;
     std::shared_ptr<std::string> _text;

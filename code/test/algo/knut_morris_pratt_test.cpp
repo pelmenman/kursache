@@ -17,7 +17,7 @@ TEST(AlgoTests, KMPTest) {
     };
 
     //when
-    knut_moris_pratt(pattern, text, supplier);
+    knuth_morris_pratt(pattern, text, supplier);
 
     //then
     ASSERT_EQ(coincidences, expected);

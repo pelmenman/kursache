@@ -1,22 +1,22 @@
 #include <algo/predictor.h>
 
-BasePredictor::BasePredictor(std::string pattern) //OK
-    : _pattern(std::move(pattern))
+BasePredictor::BasePredictor(const std::string& pattern) //OK
+    : _pattern(pattern)
 {}
 
-KnutMorisPrattPredictor::KnutMorisPrattPredictor(std::string pattern) //OK
-    : BasePredictor(std::move(pattern))
+KnuthMorrisPrattPredictor::KnuthMorrisPrattPredictor(const std::string& pattern) //OK
+    : BasePredictor(pattern)
 {}
 
 void
-KnutMorisPrattPredictor::operator()(const Word &word) const { // OK
+KnuthMorrisPrattPredictor::operator()(const Word &word) const { // OK
     _pattern.size() > word.size() ?
-           void() :
-           knut_moris_pratt(_pattern, word, _supplier, word.pos());
+    void() :
+    knuth_morris_pratt(_pattern, word, _supplier, word.pos());
 }
 
-HashMaskPredictor::HashMaskPredictor(std::string pattern) //OK
-    : BasePredictor(std::move(pattern))
+HashMaskPredictor::HashMaskPredictor(const std::string& pattern) //OK
+    : BasePredictor(pattern)
 {
     _mask = mask_substr_hash(_pattern, _pattern.size());
 }
@@ -31,44 +31,41 @@ HashMaskPredictor::operator()(const Word &word) const { //OK
               word.pos());
 }
 
-BoyerMurPredictor::BoyerMurPredictor(std::string pattern) //OK
-    : BasePredictor(std::move(pattern))
+BoyerMoorePredictor::BoyerMoorePredictor(const std::string& pattern) //OK
+    : BasePredictor(pattern)
 {
     _bad_chars = std::move(bad_char(_pattern, ALPHABET_SIZE));
 }
 
 void
-BoyerMurPredictor::operator()(const Word &word) const { //OK
+BoyerMoorePredictor::operator()(const Word &word) const { //OK
     return _pattern.size() > word.size() ?
            void() :
-           boyer_mur(_pattern, word, _bad_chars, _supplier, word.pos());
+           boyer_moore(_pattern, word, _bad_chars, _supplier, word.pos());
 }
 
-LevenshteinPredictor::LevenshteinPredictor(std::string pattern) //OK
-    : BasePredictor(std::move(pattern))
+LevenshteinPredictor::LevenshteinPredictor(const std::string& pattern) //OK
+    : BasePredictor(pattern)
 {}
 
 void
 LevenshteinPredictor::operator()(const Word &word) const { //OK
-    size_t sz_diff = _pattern.size() > word.size() ? _pattern.size() : word.size();
-    return sz_diff > 2*_pattern.size() || sz_diff > 2*word.size() ?
-            void() :
-           levenshtein(_pattern, word, _supplier, word.pos());
+    levenshtein(_pattern, word, _supplier, word.pos());
 }
 
-WeakCodePredictor::WeakCodePredictor(std::string pattern) //OK
-    : BasePredictor(std::move(pattern))
+WeakCodePredictor::WeakCodePredictor(const std::string& pattern) //OK
+    : BasePredictor(pattern)
 {}
 
 void // weak code predictor
 WeakCodePredictor::operator()(const Word &word) const { //OK
     return _pattern.size() > word.size() ?
            void() :
-           knut_moris_pratt(_pattern, word, _supplier, word.pos(), weak_code);
+           knuth_morris_pratt(_pattern, word, _supplier, word.pos(), weak_code);
 }
 
-HashEqualPredictor::HashEqualPredictor(std::string pattern)
-    : BasePredictor(std::move(pattern))
+HashEqualPredictor::HashEqualPredictor(const std::string& pattern)
+    : BasePredictor(pattern)
 {
     _pattern_hash = poly_substr_hash(_pattern, _pattern.size());
 }

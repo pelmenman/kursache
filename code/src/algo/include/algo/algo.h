@@ -10,11 +10,11 @@ using percentager = std::function<double(int, int)>;
 using table = std::vector<std::vector<int>>;
 
 template<typename Pattern, typename Str>
-void knut_moris_pratt(const Pattern& pattern,
-                      const Str& str,
-                      const supplier& supplier,
-                      const int str_pos = 0,
-                      const encoder& encoder = code)
+void knuth_morris_pratt(const Pattern& pattern,
+                        const Str& str,
+                        const supplier& supplier,
+                        const int str_pos = 0,
+                        const encoder &encoder = code)
 {
     int len = pattern.size() + 1 + str.size();
     auto concanated_index = [&str1 = pattern, &str2 = str, &coder = encoder](int index) {
@@ -25,12 +25,13 @@ void knut_moris_pratt(const Pattern& pattern,
 
 
     std::vector<int> prefix_table(len);
+    int j;
     for(int i = 1; i < len; ++i) {
-        int j = prefix_table[i - 1];
+        j = prefix_table[i - 1];
         while(j > 0 && concanated_index(i) != concanated_index(j)) {
             j = prefix_table[j - 1];
         }
-        if(concanated_index(i) == concanated_index(j)) ++j;
+        j += (concanated_index(i) == concanated_index(j));
         prefix_table[i] = j;
     }
 
@@ -49,32 +50,19 @@ void hash_mask(const Pattern& pattern,
                const supplier& supplier,
                const int str_pos = 0)
 {
-//    unsigned int res = _pattern.hash() & str.hash();
-//    auto ones = [](unsigned int num){
-//        num = num - ((num >> 1) & 0x55555555);
-//        num = (num & 0x33333333) + ((num >> 2) & 0x33333333);
-//        num = (num + (num >> 4)) & 0x0f0f0f0f;
-//        num = num + (num >> 8);
-//        num = num + (num >> 16);
-//
-//        return num & 0x0000003F;
-//    };
 
     auto percent = [&str1 = pattern, &str2 = str]() {
         int counter = 0;
         for (int i = 0; i < std::min(str1.size(), str2.size()); i++) {
-            str1[i] == str2[i] ? counter++ : 0;
+            counter += (str1[i] == str2[i]);
         }
-        return ((double)counter) / std::max(str1.size(), str2.size());
+        return str1.size() == 0 && str2.size() == 0 ? 0 : ((double)counter) / std::max(str1.size(), str2.size());
     };
 
     double perc = 0.0;
-    (pattern_mask & str_mask) >= pattern_mask ?
-        ((perc = percent()) >= EQUAL_PERCENTAGE ?
-            //supplier(perc, str_pos) :
+    (pattern_mask & str_mask) >= pattern_mask && (perc = percent()) >= EQUAL_PERCENTAGE ?
             supplier(round((perc)*100)/100, str_pos) :
-            void()) :
-    void();
+            void();
 }
 
 // Вычисляет эвристику "плохого" символа
@@ -86,35 +74,33 @@ std::vector<int> bad_char(const Str& pattern,
     int len = pattern.size();
     std::vector<int> table(alph_size, len);
 
-    for(int i = 0; i < len - 1; i++) {
-        table[encoder(pattern[i])] = len - 1 - i;
-    }
+    for(int i = 0; i < len - 1; i++) table[encoder(pattern[i])] = len - 1 - i;
 
     return table;
 }
 
 template<typename Pattern, typename Str>
-void boyer_mur(const Pattern& pattern,
-               const Str& str,
-               const std::vector<int>& chars,
-               const supplier& supplier,
-               const int str_pos = 0,
-               const encoder& encoder = code)
+void boyer_moore(const Pattern& pattern,
+                 const Str& str,
+                 const std::vector<int>& chars,
+                 const supplier& supplier,
+                 const int str_pos = 0,
+                 const encoder &encoder = code)
 {
     int pattern_len = pattern.size();
     int str_size = str.size();
 
     if(pattern_len == 0) return;
 
+    int j;
     for(int i = 0; i <= str_size - pattern_len; ) {
-        int j = pattern_len - 1;
-        while(encoder(pattern[j]) == encoder(str[i + j])) {
-            if(j == 0) {
-                supplier(1.0, str_pos + i);
-                break;
-            }
-            --j;
-        }
+        j = pattern_len - 1;
+        while(encoder(pattern[j]) == encoder(str[i + j]) && j != 0) --j;
+
+        encoder(pattern[j]) == encoder(str[i + j]) && j == 0 ?
+            supplier(1.0, str_pos + i) :
+            void();
+
         i += chars[encoder(str[i + j])];
     }
 }
@@ -132,17 +118,20 @@ void dist(const Pattern& pattern,
     int prev_row;
     int len_p = pattern.size();
     int len_s = str.size();
+    int min_on_row = 0;
 
-    for(int i = 1; i < len_p + 1; i++) { // p -> m str2, s -> n str1
+    for(int i = 1; i < len_p + 1; i++) {
         prev_row = curr_row;
         curr_row = (curr_row + 1) % 2;
         table[curr_row][0] = table[prev_row][0] + 1;
 
-        int min_on_row = len_s;
+        //int min_on_row = len_s;
+        min_on_row = len_s;
+        int add, del, repl;
         for(int j = 1; j < len_s + 1; j++) {
-            int add = table[prev_row][j] + 1;
-            int del = table[curr_row][j - 1] + 1;
-            int repl = table[prev_row][j - 1];
+            add = table[prev_row][j] + 1;
+            del = table[curr_row][j - 1] + 1;
+            repl = table[prev_row][j - 1];
             repl += (encoder(pattern[i - 1]) != encoder(str[j - 1]) ? 1 : 0);
 
             table[curr_row][j] = std::min(std::min(add, del), repl);
@@ -154,7 +143,6 @@ void dist(const Pattern& pattern,
 
     double diff = percentager(table[curr_row][len_s], len_s);
     diff < 1.0 - EQUAL_PERCENTAGE ?
-        //supplier(1.0 - diff, str_pos) :
         supplier(round((1.0 - diff)*100)/100, str_pos) :
         void();
 }
@@ -171,7 +159,7 @@ void levenshtein(const Pattern& pattern,
     for(int i = 1; i < len_s + 1; i++) table[0][i] = i;
 
     auto percent = [](int diff, int sz) {
-        return ((double)diff) / sz;
+        return diff == sz && sz == 0 ? 0 : ((double)diff) / sz;
     };
 
     dist(pattern, str, table, percent, supplier, str_pos, encoder);

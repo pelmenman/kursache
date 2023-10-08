@@ -19,10 +19,9 @@ TEST(AlgoTests, BoyerMurTest) {
     };
 
     //when
-    boyer_mur(pattern, text, bad_chars, supplier);
+    boyer_moore(pattern, text, bad_chars, supplier);
 
     //then
 
-    //std::cout << "\033[32m" << "<your text goes here>" << "\033[0m";
     ASSERT_EQ(coincidences, expected);
 }
