@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.25)
-project(cppProject)
+project(course_work)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(cppProject main.cpp Word.cpp Text.cpp Livenshtain.cpp Coincidence.cpp)
+enable_testing()
+
+
+add_subdirectory(src)
+add_subdirectory(test)

@@ -1,2 +1,10 @@
 /code/.idea/
 /code/cmake-build-debug/
+/.vs
+/.vscode
+
+/code/build/
+/code/.idea/
+/.idea/
+/.vscode/ 
+/code/src/TODO.md
