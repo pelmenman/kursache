@@ -13,8 +13,8 @@ add_executable(project_test
         ./main.cpp
         text/word_test.cpp
         text/text_test.cpp
-        algo/boyer_mur_test.cpp
-        algo/knut_morris_pratt_test.cpp
+        algo/boyer_moore_test.cpp
+        algo/knuth_morris_pratt_test.cpp
         algo/hash/hash_test.cpp
         algo/levenshtein_test.cpp
         algo/hash_mask_test.cpp

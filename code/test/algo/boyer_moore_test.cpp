@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 #include <vector>
 
-TEST(AlgoTests, BoyerMurTest) {
+TEST(AlgoTests, BoyerMooreTest) {
     //given
     std::string pattern = "asd";
     std::vector<std::tuple<double, int>> coincidences;

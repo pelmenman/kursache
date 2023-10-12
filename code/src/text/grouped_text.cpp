@@ -22,19 +22,20 @@ size_t GroupedText::size() const {
 }
 
 void GroupedText::preprocessing(const hash_func& mask, const hash_func& to_hash) {
+    int size;
+    int shift;
+    unsigned int hashed_mask;
+
     for(int i = 0; i < _text->size(); ++i) {
         if (is_symb(_text->operator[](i))) {
-            int size = 0;
-            int shift = i;
-            for( ; ; ++i) {
-                if(!is_symb(_text->operator[](i))) break;
-                ++size;
-            }
+            size = 0;
+            shift = i;
+            for( ; is_symb(_text->operator[](i)); ++i) ++size;
 
-            unsigned int hashed_mask = mask(*_text, size, shift);
+            hashed_mask = mask(*_text, size, shift);
             if(_grouped.find(hashed_mask) == _grouped.end()) _grouped[hashed_mask] = std::list<Word>();
 
-            _grouped.find(hashed_mask)->second.emplace_back(
+            _grouped[hashed_mask].emplace_back(
                     _text, size,to_hash(*_text, size, shift),shift);
         }
     }
